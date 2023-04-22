@@ -1,0 +1,17 @@
+DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS users;
+
+CREATE TABLE users (
+    id VARCHAR(50) PRIMARY KEY ,
+    username TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL
+);
+
+CREATE TABLE posts (
+    id BIGSERIAL PRIMARY KEY,
+    author_id VARCHAR(50) NOT NULL,
+    created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    title TEXT NOT NULL,
+    body TEXT NOT NULL,
+    FOREIGN KEY (author_id) REFERENCES users (id)
+);

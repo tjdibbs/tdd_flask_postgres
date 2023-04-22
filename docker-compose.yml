@@ -1,0 +1,41 @@
+# Use postgres/example user/password credentials
+version: '3.1'
+
+services:
+  app-db:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    environment:
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: flasksql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    entrypoint: ['/src/app/entrypoint.sh']
+    depends_on:
+      - app-db
+    volumes:
+      - '.:/src/app'
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE: flasksql
+      DATABASE_PASSWORD: 1234
+      DATABASE_USER: postgres
+      DATABASE_HOST: flask_tdd_postgresql-app-db-1
+      DEVELOPMENT: main.config.DevelopmentConfig
+      TESTING: main.config.TestingConfig
+      PRODUCTION: main.config.ProductionConfig
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+
