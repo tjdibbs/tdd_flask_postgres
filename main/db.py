@@ -33,7 +33,7 @@ def init_db():
   db.commit()
 
 
-@click.command('init-db')
+@click.command('init-db', help="Initialize the database")
 def init_db_command():
   """Clear the existing data and create new tables."""
   init_db()
